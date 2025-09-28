@@ -7,4 +7,5 @@ st.write("Welcome — select a model from the sidebar (or the Pages menu) to exp
 st.markdown("""
 **This repo**: separate pages implement single models.  
 Upload your CSV or use the sample datasets shipped in the pages.
+For now you can only use Linear Regression, but the next model is published by tommorew
 """)
