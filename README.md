@@ -83,19 +83,6 @@ streamlit run Home.py
 ```
 Open [http://localhost:8501](http://localhost:8501) in your browser.
 
-## 🗺️ Roadmap (planned pages)
-
-- [x] **Week 1:** Linear Regression – Regression  
-- [x] **Week 2:** Logistic Regression – Classification  
-- [ ] **Week 3:** Decision Tree / Random Forest – Classification/Regression  
-- [ ] **Week 4:** Support Vector Machine (SVM) – Classification  
-- [ ] **Week 5:** K-Means / Clustering – Unsupervised  
-- [ ] **Week 6:** Principal Component Analysis (PCA) – Dimensionality Reduction  
-- [ ] **Week 7:** Gradient Boosting / XGBoost – Ensemble  
-- [ ] **Week 8:** Neural Network (basic MLP) – Deep Learning
-
-*(You can tick them off as you add new pages.)*
-
 ---
 
 ## 🤝 Contributing
