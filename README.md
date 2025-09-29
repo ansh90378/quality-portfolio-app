@@ -9,6 +9,8 @@ A single **Streamlit** application showcasing **machine-learning models from bas
 Each model is implemented as its own page with explanations, training, and visualizations.  
 This project is designed to **demonstrate practical ML skills** to interviewers and peers.
 
+[📌 Roadmap Progress (interactive checklist)](../../issues/1)
+
 ---
 
 ## 📑 Table of Contents  
@@ -80,8 +82,6 @@ streamlit run Home.py
 
 ```
 Open [http://localhost:8501](http://localhost:8501) in your browser.
-
-## 🗺️ Roadmap (planned pages)
 
 ## 🗺️ Roadmap (planned pages)
 
