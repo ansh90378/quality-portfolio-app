@@ -1,3 +1,5 @@
+[📌 View Interactive Roadmap Checklist](../../issues/2)
+
 # 🧠 Quality Portfolio App  
 
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)
@@ -8,8 +10,6 @@
 A single **Streamlit** application showcasing **machine-learning models from basic to advanced**.  
 Each model is implemented as its own page with explanations, training, and visualizations.  
 This project is designed to **demonstrate practical ML skills** to interviewers and peers.
-
-[📌 Roadmap Progress (interactive checklist)](../../issues/1)
 
 ---
 
