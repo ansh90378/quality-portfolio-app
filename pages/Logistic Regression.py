@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
+from utils.plots import plot_classification_results, plot_regression_results
 
 st.title("Logistic Regression Demo")
 
@@ -64,3 +65,5 @@ if st.button("Predict"):
     st.success(answer)
     proba = model.predict_proba([input_data])[0][pred]
     st.caption(f"Confidence: {proba:.1%}")
+
+    plot_classification_results(model, X_train, X_test, y_test)

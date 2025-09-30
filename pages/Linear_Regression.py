@@ -1,4 +1,3 @@
-# pages/1_Linear_Regression.py
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -7,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
+from utils.plots import plot_classification_results, plot_regression_results
 
 st.title("Linear Regression (Demo)")
 
@@ -49,10 +49,4 @@ if st.button("Train Linear Regression"):
     st.write(f"**MSE:** {mse:.4f}")
     st.write(f"**R²:** {r2:.4f}")
 
-    fig, ax = plt.subplots()
-    ax.scatter(y_test, y_pred, alpha=0.7)
-    ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], '--')
-    ax.set_xlabel("Actual")
-    ax.set_ylabel("Predicted")
-    ax.set_title("Actual vs Predicted")
-    st.pyplot(fig)
+    plot_regression_results(model, X_train, X_test, y_test)

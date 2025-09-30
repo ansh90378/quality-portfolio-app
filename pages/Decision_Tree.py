@@ -1,4 +1,3 @@
-# pages/3_Decision_Tree.py
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -8,6 +7,7 @@ from sklearn.metrics import (
     accuracy_score, confusion_matrix, classification_report, roc_auc_score, roc_curve,
     mean_squared_error, r2_score
 )
+from utils.plots import plot_classification_results, plot_regression_results
 import matplotlib.pyplot as plt
 import seaborn as sns
 import io
@@ -135,34 +135,7 @@ if st.button("Train Decision Tree"):
         st.text("Classification report:")
         st.text(classification_report(y_test, y_pred))
 
-        # Confusion matrix
-        cm = confusion_matrix(y_test, y_pred)
-        fig_cm, ax = plt.subplots()
-        sns.heatmap(cm, annot=True, fmt="d", ax=ax)
-        ax.set_xlabel("Predicted")
-        ax.set_ylabel("Actual")
-        ax.set_title("Confusion Matrix")
-        st.pyplot(fig_cm)
-
-        # ROC AUC (only for binary)
-        unique_classes = np.unique(y_test)
-        if unique_classes.size == 2 and hasattr(model, "predict_proba"):
-            y_prob = model.predict_proba(X_test)[:, 1]
-            try:
-                auc = roc_auc_score(y_test, y_prob)
-                st.write(f"**ROC AUC:** {auc:.4f}")
-
-                fpr, tpr, _ = roc_curve(y_test, y_prob)
-                fig_roc, ax2 = plt.subplots()
-                ax2.plot(fpr, tpr)
-                ax2.plot([0, 1], [0, 1], "--")
-                ax2.set_xlabel("FPR")
-                ax2.set_ylabel("TPR")
-                ax2.set_title("ROC Curve")
-                st.pyplot(fig_roc)
-            except Exception:
-                pass
-
+        plot_classification_results(model, X_train, X_test, y_test)
     else:
         mse = mean_squared_error(y_test, y_pred)
         rmse = np.sqrt(mse)
@@ -171,35 +144,4 @@ if st.button("Train Decision Tree"):
         st.write(f"**RMSE:** {rmse:.4f}")
         st.write(f"**R²:** {r2:.4f}")
 
-        # Actual vs Predicted
-        fig_scatter, ax3 = plt.subplots()
-        ax3.scatter(y_test, y_pred, alpha=0.7)
-        ax3.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], "--")
-        ax3.set_xlabel("Actual")
-        ax3.set_ylabel("Predicted")
-        ax3.set_title("Actual vs Predicted")
-        st.pyplot(fig_scatter)
-
-        # Residuals
-        fig_res, ax4 = plt.subplots()
-        residuals = y_test - y_pred
-        ax4.hist(residuals, bins=30)
-        ax4.set_title("Residuals distribution")
-        st.pyplot(fig_res)
-
-    # -----------------------
-    # Feature importances
-    # -----------------------
-    try:
-        importances = model.feature_importances_
-        fi = pd.DataFrame({"feature": feature_cols, "importance": importances})
-        fi = fi.sort_values("importance", ascending=False)
-        st.subheader("Feature importances")
-        st.dataframe(fi)
-
-        fig_fi, ax5 = plt.subplots()
-        ax5.barh(fi["feature"].iloc[::-1], fi["importance"].iloc[::-1])
-        ax5.set_title("Feature importances")
-        st.pyplot(fig_fi)
-    except Exception:
-        st.info("Feature importances not available for this model.")
+        plot_regression_results(model, X_train, X_test, y_test)
