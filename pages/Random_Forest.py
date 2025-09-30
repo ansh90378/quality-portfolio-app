@@ -2,7 +2,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
+import shap
+import joblib
+
+from sklearn.model_selection import train_test_split,  cross_val_score
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.metrics import (
     accuracy_score, confusion_matrix, classification_report, roc_auc_score, roc_curve,
@@ -91,6 +94,11 @@ else:
 min_samples_split = st.sidebar.slider("min_samples_split", 2, 50, 2)
 max_features = st.sidebar.selectbox("max_features", ["sqrt", "log2", None])
 
+## New features
+balance = st.sidebar.checkbox("Use class_weight='balanced' (only Classification)")
+use_cv = st.sidebar.checkbox("Use Cross-Validation")
+save_model = st.sidebar.checkbox("Save trained model")
+
 # -----------------------
 # Train the model
 # -----------------------
@@ -103,6 +111,7 @@ if st.button("Train Random Forest"):
                     max_depth=max_depth,
                     min_samples_split=min_samples_split,
                     max_features=max_features,
+                    class_weight="balanced" if balance else None,
                     random_state=42,
                     n_jobs=-1
                 )
@@ -122,6 +131,23 @@ if st.button("Train Random Forest"):
             st.stop()
 
     st.success("Model trained ✅")
+
+    # -----------------------
+    # Evaluate
+    # -----------------------
+    st.subheader("Model Evaluation")
+
+    if use_cv:
+        scoring = "accuracy" if task == "Classification" else "r2"
+        scores = cross_val_score(model, X, y, cv=5, scoring=scoring)
+        st.write("Cross-validation scores:", scores)
+        st.write("Mean CV Score:", scores.mean())
+    else:
+        y_pred = model.predict(X_test)
+        if task == "Classification":
+            st.write("Accuracy:", accuracy_score(y_test, y_pred))
+        else:
+            st.write("R² Score:", r2_score(y_test, y_pred))
 
     # -----------------------
     # Predictions & metrics
@@ -192,3 +218,15 @@ if st.button("Train Random Forest"):
         st.pyplot(fig_fi)
     except Exception:
         st.info("Feature importances not available for this model.")
+
+    # -----------------------
+    # Save model
+    # -----------------------
+    if save_model:
+        joblib.dump(model, "random_forest_model.pkl")
+        with open("random_forest_model.pkl", "rb") as f:
+            st.download_button(
+                "Download trained model",
+                f,
+                file_name="random_forest_model.pkl",
+            )
