@@ -6,6 +6,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import LabelEncoder
 import matplotlib.pyplot as plt
+import plotly.express as px
 
 st.set_page_config(page_title="K-Means Clustering", page_icon="🔮")
 
@@ -107,7 +108,7 @@ fig, ax = plt.subplots()
 ax.plot(range(2, max_k + 1), sse, marker="o")
 ax.set_xlabel("Number of Clusters (k)")
 ax.set_ylabel("SSE (Inertia)")
-ax.set_title("Elbow Method")
+ax.set_title("📉 Elbow Method")
 st.pyplot(fig)
 
 # Choose final k
@@ -125,18 +126,19 @@ st.metric("Silhouette Score", f"{score:.3f}")
 
 # -------------------- Visualization --------------------
 if data.shape[1] >= 2:
+    # --- 2D Matplotlib plot ---
     fig, ax = plt.subplots(figsize=(7, 5))
 
     scatter = ax.scatter(
         data.iloc[:, 0], data.iloc[:, 1],
         c=labels,
-        cmap="tab10",  # better distinct colors
-        s=80,          # larger points
+        cmap="tab10",
+        s=80,
         alpha=0.7,
         edgecolors="k"
     )
 
-    # Plot centroids
+    # Centroids
     centers = model.cluster_centers_
     ax.scatter(
         centers[:, 0], centers[:, 1],
@@ -145,16 +147,57 @@ if data.shape[1] >= 2:
         label="Centroids"
     )
 
-    # Labels and legend
     ax.set_xlabel(data.columns[0], fontsize=12)
     ax.set_ylabel(data.columns[1], fontsize=12)
     ax.set_title("✨ Cluster Visualization (first 2 features)", fontsize=14, weight="bold")
 
-    # Add legend for clusters
     handles, _ = scatter.legend_elements(prop="colors", alpha=0.6)
     legend_labels = [f"Cluster {i}" for i in range(n_clusters)]
     ax.legend(handles, legend_labels, title="Clusters", bbox_to_anchor=(1.05, 1), loc="upper left")
 
     st.pyplot(fig)
-else:
-    st.info("Need at least 2 numeric features to visualize clusters.")
+
+# --- Optional 3D Plotly visualization ---
+if data.shape[1] >= 3:
+    st.subheader("🌐 Interactive 3D Cluster Visualization")
+
+    fig3d = px.scatter_3d(
+        data,
+        x=data.columns[0],
+        y=data.columns[1],
+        z=data.columns[2],
+        color=labels.astype(str),
+        symbol=labels.astype(str),
+        opacity=0.7,
+        size_max=10,
+        color_discrete_sequence=px.colors.qualitative.Set1
+    )
+
+    # Add centroids
+    centers_df = pd.DataFrame(centers, columns=data.columns[:data.shape[1]])
+    fig3d.add_scatter3d(
+        x=centers_df.iloc[:, 0],
+        y=centers_df.iloc[:, 1],
+        z=centers_df.iloc[:, 2],
+        mode="markers",
+        marker=dict(size=12, color="black", symbol="diamond"),
+        name="Centroids"
+    )
+
+    st.plotly_chart(fig3d, use_container_width=True)
+
+# -------------------- Add cluster labels to dataset --------------------
+data_with_clusters = data.copy()
+data_with_clusters["Cluster"] = labels
+
+st.subheader("📥 Download Clustered Dataset")
+st.dataframe(data_with_clusters.head())
+
+# Convert to CSV for download
+csv = data_with_clusters.to_csv(index=False).encode("utf-8")
+st.download_button(
+    label="⬇️ Download CSV with Clusters",
+    data=csv,
+    file_name="clustered_dataset.csv",
+    mime="text/csv"
+)
