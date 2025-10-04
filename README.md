@@ -18,6 +18,7 @@ This project is designed to **demonstrate practical ML skills** to interviewers 
 - [Project Vision](#-project-vision)  
 - [Live Demo](#-live-demo)  
 - [Current Pages](#-current-pages)  
+- [Theory Covered](#-theory-covered)  
 - [Tech Stack](#-tech-stack)  
 - [Installation](#-installation-local-run)  
 - [Roadmap](#-roadmap-planned-pages)  
@@ -46,10 +47,53 @@ This project is designed to **demonstrate practical ML skills** to interviewers 
 
 ## 📁 Current Pages  
 - `Home` – project overview & navigation  
-- `Linear Regression` – classic regression on sample or custom data  
-- `Logistic Regression` – binary classification on sample or custom data  
+- `Linear Regression` – regression with sample/custom data  
+- `Logistic Regression` – binary classification with sample/custom data  
+- `Decision Tree & Random Forest` – tree-based models for classification & regression  
+- `K-Means Clustering` – unsupervised clustering with Elbow & Silhouette  
+- `PCA` – dimensionality reduction with 2D & 3D visualization  
 
-*(More models will be added each week.)*
+---
+
+## 📖 Theory Covered  
+
+### 🔹 Week 1 – Linear Regression  
+Predicts a **continuous target** as a weighted sum of features.  
+![Linear Regression](https://media.geeksforgeeks.org/wp-content/uploads/20231129130431/11111111.png)  
+Evaluation: **MSE, RMSE, R²**.  
+
+---
+
+### 🔹 Week 2 – Logistic Regression  
+Predicts **probabilities** for classification problems.  
+![Logistic Regression Curve](https://zd-brightspot.s3.us-east-1.amazonaws.com/wp-content/uploads/2022/04/11040521/46-4-e1715636469361.png)  
+Evaluation: **Accuracy, Precision, Recall, F1-Score, Confusion Matrix**.  
+
+---
+
+### 🔹 Week 3–4 – Decision Tree & Random Forest  
+Decision Trees: Splits data using **if-else rules** for interpretability.  
+![Decision Tree](https://scikit-learn.org/stable/_images/sphx_glr_plot_tree_regression_001.png)  
+
+Random Forest: An **ensemble of trees** for higher accuracy & robustness.  
+![Random Forest Ensemble](https://media.geeksforgeeks.org/wp-content/uploads/20240130162938/random.webp)  
+
+---
+
+### 🔹 Week 5 – K-Means Clustering  
+Groups data into **K clusters** based on similarity.  
+- **Elbow Method** helps choose K.  
+- **Silhouette Score** measures separation.  
+
+![K-Means Clustering](https://scikit-learn.org/stable/_images/sphx_glr_plot_kmeans_digits_001.png)  
+
+---
+
+### 🔹 Week 6 – Principal Component Analysis (PCA)  
+Reduces dimensionality by projecting data into fewer **principal components**.  
+![PCA Components](https://scikit-learn.org/stable/_images/sphx_glr_plot_pca_iris_001.png)  
+
+Bar plot shows **variance explained**, and 2D/3D scatter plots illustrate new transformed features.  
 
 ---
 
@@ -80,10 +124,7 @@ pip install -r requirements.txt
 # Run the app locally
 streamlit run Home.py
 
-```
-Open [http://localhost:8501](http://localhost:8501) in your browser.
 
----
 
 ## 🤝 Contributing
 
